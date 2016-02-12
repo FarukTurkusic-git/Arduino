@@ -23,7 +23,7 @@ class node {
     }
 
 };
-void prazno(QueueArray <node> lista) {
+void prazni(QueueArray <node> &lista) {
   while (!lista.isEmpty ()) {
     //Serial.println("test33");
     lista.pop();
@@ -43,20 +43,21 @@ QueueArray <node> trans3;
 
 node trenutna;
 boolean check;
-void neigh() {
-  node u = trenutna;
+
+void neigh(node kom = trenutna) {
+  node u = kom;
   u.x = u.x + 1;
   neighbours.push(u);
-  node d = trenutna;
+  node d = kom;
   d.x = d.x - 1;
   neighbours.push(d);
-  node r = trenutna;
+  node r = kom;
   r.y = r.y + 1;
   neighbours.push(r);
-  node l = trenutna;
+  node l = kom;
   l.y = l.y - 1;
   neighbours.push(l);
-}
+};
 void setup() {
   Serial.begin(9600);
   //node path_list[35];
@@ -88,13 +89,6 @@ void loop() {
   int p = wall.count();
   Serial.println(p);
   
-  while (!wall.isEmpty ()) {
-          node med = wall.pop(); list.push(med);
-          med.ispis();
-        }
-  
-  while(1){};
-  
   a.init(2, 1, 0);
   trenutna.init(1, 1, 0);
   cilj.init(3, 1, 0);
@@ -104,14 +98,27 @@ void loop() {
   trenutna.ispis();
 
    
-    while (k<2){
-        neigh();
+    while (!list.isEmpty ()){
+        
         k++;
+        if(k>4) break;
+        
+        node temp = list.pop();
+        temp.x = 4;
+        neigh();
       
         Serial.print("broj komsija :");
         Serial.println(neighbours.count());
         Serial.print("broj u listi :");
         Serial.println(list.count());
+        
+        
+         while (!neighbours.isEmpty ()) {
+          node med = neighbours.pop();
+          med.ispis();
+        }
+        
+        while(1){}
         
         int t= neighbours.count();
         
