@@ -28,8 +28,14 @@ void prazni(QueueArray <node> &lista) {
     //Serial.println("test33");
     lista.pop();
   }
+};
 
-
+void prebaci(QueueArray <node> &lista1,QueueArray <node> &lista2) {
+  while (!lista1.isEmpty ()) {
+    //Serial.println("test33");
+    node tra = lista1.pop();
+    lista2.push(tra);
+  }
 };
 
 QueueArray <node> wall;
@@ -96,6 +102,7 @@ void loop() {
   
   list.push(trenutna);
   trenutna.ispis();
+  final_list.push(trenutna);
 
    
     while (!list.isEmpty ()){
@@ -104,8 +111,7 @@ void loop() {
         if(k>4) break;
         
         node temp = list.pop();
-        temp.x = 4;
-        neigh();
+        neigh(temp);
       
         Serial.print("broj komsija :");
         Serial.println(neighbours.count());
@@ -113,23 +119,52 @@ void loop() {
         Serial.println(list.count());
         
         
-         while (!neighbours.isEmpty ()) {
-          node med = neighbours.pop();
-          med.ispis();
+        //while (!neighbours.isEmpty ()) {
+        //  node med = neighbours.pop();
+        //  med.ispis();
+        //}
+        prazni(trans);
+        prazni(trans2);
+        
+       /* 
+       int broj = neighbours.count();
+        
+       while (!neighbours.isEmpty ()) {
+         node temp = neighbours.dequeue();
+         Serial.println(neighbours.count());
+         temp.ispis();
+       }
+       
+        Serial.println(neighbours.count());
+
+        while(1){} */
+        
+        for (int n = 0; n < neighbours.count(); n++) {
+          node temp = neighbours.dequeue();
+          temp.ispis();
+          check = true;
+          for (int m = 0; m < wall.count(); m++) {
+            node temp2 = wall.dequeue();
+            ////////////////////// uslov 1: ako je komsija zid izbaci iz komsija ///////
+            if (temp.x == temp2.x && temp.y == temp2.y) check = false;
+            trans2.push(temp2);
+          }
+          if(check) trans.push(temp);
+          prebaci(trans2,wall);
+          
         }
         
-        while(1){}
-        
-        int t= neighbours.count();
-        
-        while (!neighbours.isEmpty ()) {
-          node med = neighbours.pop(); list.push(med);
-        }
+        prebaci(trans,list);
+        //prebaci(trans2,wall);
+        prazni(neighbours);
+        prazni(trans);
+        prazni(trans2);
         
         Serial.print("broj komsija :");
         Serial.println(neighbours.count());
         Serial.print("broj u listi :");
         Serial.println(list.count());
+         while(k>2){}
 }
   while(1){}
 }
