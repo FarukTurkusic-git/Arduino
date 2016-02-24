@@ -108,7 +108,7 @@ void loop() {
     while (!list.isEmpty ()){
         
         k++;
-        if(k>4) break;
+        //if(k>4) break;
         
         node temp = list.pop();
         neigh(temp);
@@ -139,18 +139,22 @@ void loop() {
 
         while(1){} */
         
-        for (int n = 0; n < neighbours.count(); n++) {
+        while (!neighbours.isEmpty ()) {
           node temp = neighbours.dequeue();
           temp.ispis();
           check = true;
-          for (int m = 0; m < wall.count(); m++) {
+          while (!wall.isEmpty ()) {
             node temp2 = wall.dequeue();
             ////////////////////// uslov 1: ako je komsija zid izbaci iz komsija ///////
-            if (temp.x == temp2.x && temp.y == temp2.y) check = false;
+            if (temp.x == temp2.x && temp.y == temp2.y) {
+              check = false;
+              Serial.println("nasao ZID");
+            }
             trans2.push(temp2);
           }
           if(check) trans.push(temp);
           prebaci(trans2,wall);
+          prazni(trans2);
           
         }
         
@@ -164,7 +168,9 @@ void loop() {
         Serial.println(neighbours.count());
         Serial.print("broj u listi :");
         Serial.println(list.count());
-         while(k>2){}
+         while(k>20){
+           Serial.println("usao u petlju");
+         }
 }
   while(1){}
 }
