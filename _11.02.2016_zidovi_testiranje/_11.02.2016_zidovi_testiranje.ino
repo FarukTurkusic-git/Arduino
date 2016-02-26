@@ -96,9 +96,9 @@ void loop() {
   Serial.println(p);
   
   a.init(2, 1, 0);
-  trenutna.init(1, 1, 0);
-  cilj.init(3, 1, 0);
-  zid.init(2,1,0);
+  trenutna.init(2, 1, 0);
+  cilj.init(3, 2, 0);
+  zid.init(6,1,0);
   
   list.push(trenutna);
   trenutna.ispis();
@@ -109,8 +109,14 @@ void loop() {
         
         k++;
         //if(k>4) break;
-        
         node temp = list.pop();
+        temp.ispis();
+        
+        if (cilj.x == temp.x && cilj.y == temp.y) {
+          Serial.println("nasao Cilj !!!");
+          break;
+        }
+        
         neigh(temp);
       
         Serial.print("broj komsija :");
@@ -140,19 +146,20 @@ void loop() {
         while(1){} */
         
         while (!neighbours.isEmpty ()) {
-          node temp = neighbours.dequeue();
-          temp.ispis();
+          node temp1 = neighbours.dequeue();
+          temp1.d = temp.d+1;
+          temp1.ispis();
           check = true;
           while (!wall.isEmpty ()) {
             node temp2 = wall.dequeue();
             ////////////////////// uslov 1: ako je komsija zid izbaci iz komsija ///////
-            if (temp.x == temp2.x && temp.y == temp2.y) {
+            if (temp1.x == temp2.x && temp1.y == temp2.y) {
               check = false;
               Serial.println("nasao ZID");
             }
             trans2.push(temp2);
           }
-          if(check) trans.push(temp);
+          if(check) trans.push(temp1);
           prebaci(trans2,wall);
           prazni(trans2);
           
@@ -168,9 +175,9 @@ void loop() {
         Serial.println(neighbours.count());
         Serial.print("broj u listi :");
         Serial.println(list.count());
-         while(k>20){
+         /*while(k>20){
            Serial.println("usao u petlju");
-         }
+         } */
 }
   while(1){}
 }
